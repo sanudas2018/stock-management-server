@@ -48,6 +48,37 @@ async function run(){
          const result = await productCollection.insertOne(newProduct);
          res.send(result);
       })
+      // Update Product
+      app.get('/products/:id', async(req, res) => {
+         const id = req.params.id;
+         const query = {_id: ObjectId(id)};
+         const result = await productCollection.findOne(query);
+         res.send(result);
+      })
+      // Update PUT
+      app.put('/products/:id', async(req, res) =>{
+         const id = req.params.id;
+         const updateProduct = req.body;
+         const filter = {_id: ObjectId(id)};
+         const options = {upsert: true};
+         const updateDoc = {
+            $set:{
+               name: updateProduct.name,
+               price: updateProduct.price,
+               quantity: updateProduct.quantity,
+               supplier: updateProduct.supplier,
+               image: updateProduct.image,
+               image2: updateProduct.image2,
+               description: updateProduct.description
+               
+               
+            }
+         };
+         const result = await productCollection.updateOne(filter, updateDoc, options);
+         res.send(result);
+      })
+
+      // Update Product End
 
       // .....Delete Product......
       app.delete('/products/:id', async(req, res) => {
@@ -59,7 +90,8 @@ async function run(){
 
       // .....End Delete Product....
 
-      // update single id details search
+
+      // Inventory update single id details search
       app.get('/inventory-update/:id', async(req, res) => {
          const id = req.params.id;
          const query = {_id:ObjectId(id)};
@@ -67,7 +99,7 @@ async function run(){
          res.send(result);
 
       })
-      // update product
+      // Inventory update product
       app.put('/inventory-update/:id', async(req, res) => {
          const id = req.params.id;
          const updatedProduct = req.body;
