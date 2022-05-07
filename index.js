@@ -140,7 +140,9 @@ app.get('/', (req, res) => {
    res.send('connected to star tec bd computer');
 });
 
-
+app.get('/myProject', (req, res) =>{
+   res.send('MY INVENTORY MANAGE APP')
+})
 
 //...................
 app.listen(port, () => {
