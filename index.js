@@ -25,6 +25,7 @@ async function run(){
    try{
       await client.connect();
       const productCollection = client.db('startech-bd').collection('products');
+      const AddproductCollection = client.db('startech-bd').collection('addproducts');
 
       //....mongodb(find multiple docu:). All data load.
       app.get('/products', async(req, res) => {
@@ -47,6 +48,16 @@ async function run(){
          const newProduct = req.body;
          const result = await productCollection.insertOne(newProduct);
          res.send(result);
+      })
+
+      // My items......
+      app.post('/addproducts', async(req, res) => {
+         const email = req.query.email;
+         console.log(email)
+         const query = {email: email};
+         const cursor = AddproductCollection.find(query);
+         const result = await cursor.toArray();
+         res.send(result)
       })
       // Update Product
       app.get('/products/:id', async(req, res) => {
