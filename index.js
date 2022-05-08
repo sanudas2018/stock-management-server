@@ -51,13 +51,13 @@ async function run(){
       })
 
       // My items......
-      app.post('/addproducts', async(req, res) => {
+      app.get('/products', async(req, res) => {
          const email = req.query.email;
-         console.log(email)
+         // console.log(email)
          const query = {email: email};
-         const cursor = AddproductCollection.find(query);
-         const result = await cursor.toArray();
-         res.send(result)
+         const cursor = productCollection.find(query);
+         const myItem = await cursor.toArray();
+         res.send(myItem)
       })
       // Update Product
       app.get('/products/:id', async(req, res) => {
