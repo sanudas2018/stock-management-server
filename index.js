@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion} = require('mongodb');
 const ObjectId = require('mongodb').ObjectId;
 require ('dotenv').config();
@@ -27,6 +28,13 @@ async function run(){
       const productCollection = client.db('startech-bd').collection('products');
       const AddproductCollection = client.db('startech-bd').collection('addproducts');
 
+      // JWT Token****************
+      app.post('/login', async(req, res) => {
+         const user = req.body;
+         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1d'
+         });
+         res.send({accessToken});
+      })
       //....mongodb(find multiple docu:). All data load.
       app.get('/products', async(req, res) => {
          const query = {}
@@ -34,6 +42,7 @@ async function run(){
          const products = await cursor.toArray();
          res.send(products);
       })
+      
 
       //.....Home page Product show Limited......
       app.get('/products', async(req, res) => {
